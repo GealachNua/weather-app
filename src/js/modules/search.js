@@ -33,9 +33,10 @@ const bindSearchEvents = () => {
 }; 
 
 const updateWeather = async (query) => {
+    $spinnerWrapper.classList.toggle("spinner-wrapper--active");
     const { lat, lng } = await getLatLng(address);
     const weatherData = await getWeatherData(lat, lng);
-
+    $spinnerWrapper.classList.toggle("spinner-wrapper--active");
     const weatherCurrent = weatherData.currently;
     weatherCurrent.temperature = fahToKel(weatherCurrent.temperature);
     setCurrentWeather(weatherCurrent);
