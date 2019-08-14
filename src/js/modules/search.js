@@ -6,6 +6,9 @@ const $searchInput = document.querySelector(".search__input");
 const $searchCity = document.querySelector(".search__city");
 const $spinnerWrapper = document.querySelector(".spinner-wrapper");
 const GEOCODE_KEY = "tbd";
+const DARK_SKY_KEY ="1234";
+// Use https://cors-anywhere.herokuapp.com/ in front of webaddress to act as proxy server.
+const CORS = "https://cors-anywhere.herokuapp.com/";
 
 export const initSearch = () => {
     console.log("Hi this is search module speaking");
@@ -20,10 +23,24 @@ const bindSearchEvents = () => {
         if ($searchInput.value === "" ) return;
         address = $searchInput.value;
         $searchInput.value = "";
-        getLatLng(address);
+        updateWeather(address);
         render();
     });
 }; 
+
+const updateWeather = async (query) => {
+    const { lat, lng } = await getLatLng(address);
+    console.log("Here is the result: ");
+    console.log(await getWeatherData(lat, lng));
+
+}
+
+const getWeatherData = async (query) => {
+    const reqLink = `${CORS}/https://api.darksky.net/forecast/${DARK_SKY_KEY}/${lat},${lng}`;
+    const fetchData = await fetch(reqLink);
+    const parsed = await fetchData.json();
+    return parsed;
+}
 
 // Get lat long from Google Geocoding API.
 const getLatLng = async (query) => {
