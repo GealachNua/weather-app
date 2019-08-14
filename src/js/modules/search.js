@@ -1,3 +1,6 @@
+import { setCurrentWeather } from './current';
+import { fahToKel } from '../utils/utils'
+
 let address = "Nieuw Vennep";
 
 // cache DOM; BEM style
@@ -13,6 +16,7 @@ const CORS = "https://cors-anywhere.herokuapp.com/";
 export const initSearch = () => {
     console.log("Hi this is search module speaking");
     bindSearchEvents();
+    updateWeather(address);
 }; 
 
 const bindSearchEvents = () => {
@@ -30,9 +34,13 @@ const bindSearchEvents = () => {
 
 const updateWeather = async (query) => {
     const { lat, lng } = await getLatLng(address);
-    console.log("Here is the result: ");
-    console.log(await getWeatherData(lat, lng));
+    const weatherData = await getWeatherData(lat, lng);
 
+    const weatherCurrent = weatherData.currently;
+    weatherCurrent.temperature = fahToKel(weatherCurrent.temperature);
+    setCurrentWeather(weatherCurrent);
+
+    console.log(weatherData);
 }
 
 const getWeatherData = async (query) => {
