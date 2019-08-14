@@ -1,4 +1,5 @@
 import { setCurrentWeather } from './current';
+import { setMultiWeather } from './multi';
 import { fahToKel } from '../utils/utils'
 
 let address = "Nieuw Vennep";
@@ -37,9 +38,17 @@ const updateWeather = async (query) => {
     const { lat, lng } = await getLatLng(address);
     const weatherData = await getWeatherData(lat, lng);
     $spinnerWrapper.classList.toggle("spinner-wrapper--active");
+    
     const weatherCurrent = weatherData.currently;
     weatherCurrent.temperature = fahToKel(weatherCurrent.temperature);
     setCurrentWeather(weatherCurrent);
+
+    const weatherMulti = weatherData.daily.data.map(elem => {
+        elem.temperatureHigh = fahToKel(elem.temperatureHigh);
+        elem.temperatureLow = fahToKel(elem.temperatureLow);
+        return elem;
+    });
+    setMultiWeather(weatherMulti);
 
     console.log(weatherData);
 }
