@@ -9,6 +9,7 @@ const $searchForm = document.querySelector(".search__form");
 const $searchInput = document.querySelector(".search__input");
 const $searchCity = document.querySelector(".search__city");
 const $spinnerWrapper = document.querySelector(".spinner-wrapper");
+
 const GEOCODE_KEY = "tbd";
 const DARK_SKY_KEY ="1234";
 // Use https://cors-anywhere.herokuapp.com/ in front of webaddress to act as proxy server.
@@ -48,9 +49,12 @@ const updateWeather = async (query) => {
         elem.temperatureLow = fahToKel(elem.temperatureLow);
         return elem;
     });
-    setMultiWeather(weatherMulti);
 
-    console.log(weatherData);
+    // Add properties to weatherMulti since its data uses different properties. This causes missing data when displaying multi als current in the app.
+    weatherMulti[0].temperature = weatherCurrent.temperature;
+    weatherMulti[0].summary = weatherCurrent.summary;
+
+    setMultiWeather(weatherMulti);
 }
 
 const getWeatherData = async (query) => {

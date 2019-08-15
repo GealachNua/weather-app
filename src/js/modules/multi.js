@@ -1,10 +1,25 @@
-import { getIcon, toCelFah } from '../utils/utils'
+import { getIcon, toCelFah } from '../utils/utils';
+import { setCurrentWeather } from "./current";
 
 let weatherList = [];
 let unit = "us";
+let selectedIndex = 0;
 
 // cache the DOM
 const $wlist = document.querySelector('.wlist');
+
+export const bindMultiEvents = _ => {
+    $wlist.addEventListener("click", event => {
+        let elem = event.target;
+        while (elem && !elem.matches(".wlist__item")) {
+            elem = event.taget.parentElement;
+        }
+        const listElemIndex = [...elem.parentElement.children].indexOf(elem);
+        selectedIndex = listElemIndex;
+        setCurrentWeather(weatherList[listElemIndex]);
+        render();
+    })
+}
 
 export const setMultiWeather = newList => {
     weatherList = newList;
@@ -24,7 +39,7 @@ const render = _ => {
         // * 1000 to get miliseconds 
         const currentDayIndex = new Date(weatherList[i].time * 1000).getDay();
         markup += `
-            <div class="wlist__item>
+            <div class="wlist__item ${ i === selectedIndex ? "wlist__item--selected" : ""} " >
                 <img src="${getIcon(weatherList[i].icom)}" class="wlist__icon">
                 <div class="wlist__range">
                 ${toCelFah(highTemp, unit)}/${toCelFah(lowTemp, unit)}
