@@ -26,6 +26,11 @@ export const setMultiWeather = newList => {
     render();
 }
 
+export const setMultiUnit = newUnit => {
+    unit = newUnit;
+    render();
+}
+
 const getDayOfWeek = dayIndex => {
     const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
     return days[dayIndex];

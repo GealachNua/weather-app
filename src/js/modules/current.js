@@ -17,6 +17,11 @@ export const setCurrentWeather = newWeather => {
     render();
 }
 
+export const setCurrentUnit = newUnit => {
+    unit = newUnit;
+    render(); 
+}
+
 const whichTemp = weather => {
     if (weather.temperature) {
         return weather.temperature
